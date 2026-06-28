@@ -1,17 +1,17 @@
-const CardImage = ({ src, alt = "Card Image"}) => {
+const CardImage = ({ src, alt = "Card Image" }) => {
+  const imagenValida = src && !src.includes('null');
+  const imagenFallback = `https://picsum.photos/400/200?random=${alt.length}`;
+
   return (
     <div style={{ width: "100%", overflow: "hidden", borderRadius: "8px 8px 0 0" }}>
-      {src ? (
-        <img
-          src={src}
-          alt={alt}
-          className="card-image"
-        />
-      ) : (
-        <div style={{ height: "200px", background: "#e5e7eb", display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <span style={{ color: "#9ca3af", fontSize: "14px" }}>No image available</span>
-        </div>
-      )}
+      <img
+        src={imagenValida ? src : imagenFallback}
+        alt={alt}
+        className="card-image"
+        onError={(e) => {
+          e.target.src = imagenFallback;
+        }}
+      />
     </div>
   );
 };

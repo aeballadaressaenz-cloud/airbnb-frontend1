@@ -20,14 +20,14 @@ function Categorybar({ filtroActivo, onFiltroTipo, filtros, onFiltros }) {
   const [ciudad, setCiudad] = useState(filtros.ciudad);
   const [capacidad, setCapacidad] = useState(filtros.capacidad);
 
-  const categorias = [
-    { icono: <FaUmbrellaBeach size={32}  color="#c5c224"/>, nombre: "Frente al Mar" },
-    { icono: <GiMountains size={32}  color="#388038"/>,nombre: "Resorts" },
-    { icono: <PiBuildingApartmentFill size={32}  color="#72c497fb" />, nombre: "Apartamentos" },
-    { icono: <GiHouse size={32}  color="#da9c3f" />, nombre: "Propiedades" },
-    { icono: <GiMountainClimbing size={32}  color="#a8c72f" />, nombre: "Experiencias" },
-  { icono: <GiMeditation size={32} color="#d87625"/>, nombre: "Retiros" },
-  ];
+const categorias = [
+  { icono: <FaUmbrellaBeach size={32} color="#c5c224"/>, nombre: "Frente al Mar", tipo: "frente_al_mar" },
+  { icono: <GiMountains size={32} color="#388038"/>, nombre: "Resorts", tipo: "resorts" },
+  { icono: <PiBuildingApartmentFill size={32} color="#72c497fb"/>, nombre: "Apartamentos", tipo: "apartamento" },
+  { icono: <GiHouse size={32} color="#da9c3f"/>, nombre: "Propiedades", tipo: "propiedades" },
+  { icono: <GiMountainClimbing size={32} color="#a8c72f"/>, nombre: "Experiencias", tipo: "experiencias" },
+  { icono: <GiMeditation size={32} color="#d87625"/>, nombre: "Retiros", tipo: "retiros" },
+];
 
   const aplicarFiltros = () => {
     onFiltros({ ciudad, precioMax, capacidad });
@@ -63,7 +63,7 @@ function Categorybar({ filtroActivo, onFiltroTipo, filtros, onFiltros }) {
           {categorias.map((cat) => (
             <div
               key={cat.nombre}
-              onClick={() => onFiltroTipo(filtroActivo === cat.nombre ? "" : cat.nombre)}
+              onClick={() => onFiltroTipo(filtroActivo === cat.tipo ? "" : cat.tipo)}
               style={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -72,8 +72,8 @@ function Categorybar({ filtroActivo, onFiltroTipo, filtros, onFiltros }) {
                 cursor: 'pointer',
                 minWidth: 'fit-content',
                 fontSize: '13px',
-                color: filtroActivo === cat.nombre ? '#FF385C' : '#555',
-                borderBottom: filtroActivo === cat.nombre ? '2px solid #FF385C' : '2px solid transparent',
+                color: filtroActivo === cat.tipo ? '#FF385C' : '#555',
+                borderBottom: filtroActivo === cat.tipo ? '2px solid #FF385C' : '2px solid transparent',
                 paddingBottom: '4px',
                 transition: 'all 0.2s'
               }}
