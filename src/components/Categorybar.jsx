@@ -16,7 +16,7 @@ import { useState } from "react";
 
 function Categorybar({ filtroActivo, onFiltroTipo, filtros, onFiltros }) {
   const [mostrarPanel, setMostrarPanel] = useState(false);
-  const [precioMax, setPrecioMax] = useState(filtros.precioMax);
+const [precioMax, setPrecioMax] = useState(500);
   const [ciudad, setCiudad] = useState(filtros.ciudad);
   const [capacidad, setCapacidad] = useState(filtros.capacidad);
 
@@ -151,7 +151,7 @@ const categorias = [
       <Slider
         value={precioMax}
         onChange={(e, newValue) => setPrecioMax(newValue)}
-        min={50}
+        min={20}
         max={500}
         sx={{
           color: '#FF385C',
@@ -161,7 +161,7 @@ const categorias = [
         }}
       />
       <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#999' }}>
-        <span>$50</span>
+        <span>$20</span>
         <span>$500</span>
       </div>
     </div>

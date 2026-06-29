@@ -4,9 +4,13 @@ import CardHeader from './CardHeader';
 import CardTitle from './CardTitle';
 import CardBody from './CardBody';
 import CardFooter from './CardFooter';
+import { useNavigate } from 'react-router-dom';
 
 const TravelCard = ({ card }) => {
+  const navigate = useNavigate();
   return (
+        <div onClick={() => navigate(`/alojamiento/${card.id_alojamiento}`)} style={{ cursor: 'pointer' }}>
+
     <Card variant={card.id_alojamiento % 2 === 0 ? "primary" : "default"} padding="none" className="rounded-xl overflow-hidden" style={{ minHeight: '420px', display: 'flex', flexDirection: 'column' }}>
       <CardImage src={`http://localhost:3000/api/alojamientos/${card.id_alojamiento}/imagenes/${card.id_imagen_principal}`} alt={card.titulo} />
       <CardHeader>
@@ -25,6 +29,7 @@ const TravelCard = ({ card }) => {
         </p>
       </CardFooter>
     </Card>
+        </div>
   );
 };
 
