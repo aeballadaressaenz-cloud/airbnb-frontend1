@@ -15,6 +15,11 @@ const DetalleAlojamiento = () => {
   const [valoraciones, setValoraciones] = useState([]);
   const [cargando, setCargando] = useState(true);
 
+  // Estados para la mini reserva (fechas y huéspedes)
+  const [fechaEntrada, setFechaEntrada] = useState('');
+  const [fechaSalida, setFechaSalida] = useState('');
+  const [numHuespedes, setNumHuespedes] = useState(1);
+
   useEffect(() => {
     axios.get(`${BASE_URL}/api/alojamientos/${id}`)
       .then((response) => {
@@ -29,6 +34,16 @@ const DetalleAlojamiento = () => {
       });
   }, [id]);
 
+  const handleReservar = () => {
+    navigate(`/reserva/${id}`, {
+      state: {
+        fecha_entrada: fechaEntrada,
+        fecha_salida: fechaSalida,
+        num_huespedes: numHuespedes,
+      },
+    });
+  };
+
   if (cargando) return <div style={{ textAlign: 'center', padding: '50px' }}>Cargando...</div>;
   if (!alojamiento) return <div style={{ textAlign: 'center', padding: '50px' }}>Alojamiento no encontrado.</div>;
 
@@ -40,7 +55,7 @@ const DetalleAlojamiento = () => {
         <img
           src={`${BASE_URL}/api/alojamientos/${id}/imagenes/${alojamiento.id_imagen_principal}`}
           alt={alojamiento.titulo}
-          style={{ width: '100%', height: '400px', objectFit: 'cover', borderRadius: '16px' }}
+          className="w-full h-56 md:h-[400px] object-cover rounded-2xl"
           onError={(e) => { e.target.src = `https://picsum.photos/900/400?random=${id}`; }}
         />
         <button
@@ -66,8 +81,8 @@ const DetalleAlojamiento = () => {
       </div>
 
       {/* Título y rating */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-        <h1 style={{ fontSize: '28px', fontWeight: '700' }}>{alojamiento.titulo}</h1>
+      <div className="flex flex-wrap justify-between items-center gap-2 mb-2">
+        <h1 className="text-2xl md:text-[28px] font-bold">{alojamiento.titulo}</h1>
         <p style={{ color: '#f59e0b', fontSize: '18px' }}>
           ★ {alojamiento.calificacion_promedio > 0 ? alojamiento.calificacion_promedio.toFixed(1) : 'Nuevo'}
         </p>
@@ -94,11 +109,11 @@ const DetalleAlojamiento = () => {
         </span>
       </div>
 
-      {/* Layout de dos columnas */}
-      <div style={{ display: 'flex', gap: '40px', alignItems: 'flex-start' }}>
+      {/* Layout de dos columnas: apiladas en móvil, lado a lado desde md */}
+      <div className="flex flex-col md:flex-row gap-8 md:gap-10 items-start">
 
         {/* Columna izquierda */}
-        <div style={{ flex: 1 }}>
+        <div className="flex-1 w-full min-w-0">
 
           {/* Anfitrión */}
           <div style={{ borderBottom: '1px solid #e0e0e0', paddingBottom: '24px', marginBottom: '24px' }}>
@@ -154,38 +169,91 @@ const DetalleAlojamiento = () => {
         </div>
 
         {/* Columna derecha - Precio */}
-        <div style={{
-          width: '340px',
-          border: '1px solid #e0e0e0',
-          borderRadius: '16px',
-          padding: '24px',
-          position: 'sticky',
-          top: '24px',
-          boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
-        }}>
+        <div
+          className="w-full md:w-[340px] md:sticky md:top-6"
+          style={{
+            border: '1px solid #e0e0e0',
+            borderRadius: '16px',
+            padding: '24px',
+            boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
+          }}
+        >
           <p style={{ fontSize: '24px', fontWeight: '700', marginBottom: '16px' }}>
             ${alojamiento.precio_por_noche} <span style={{ fontSize: '16px', fontWeight: '400', color: '#6b7280' }}>/ noche</span>
           </p>
 
           <div style={{ border: '1px solid #e0e0e0', borderRadius: '8px', marginBottom: '16px' }}>
             <div style={{ display: 'flex', borderBottom: '1px solid #e0e0e0' }}>
-              <div style={{ flex: 1, padding: '12px', borderRight: '1px solid #e0e0e0' }}>
-                <p style={{ fontSize: '11px', fontWeight: '700' }}>LLEGADA</p>
-                <p style={{ fontSize: '14px', color: '#6b7280' }}>Agregar fecha</p>
+              <div style={{ flex: 1, padding: '8px 12px', borderRight: '1px solid #e0e0e0', minWidth: 0, boxSizing: 'border-box' }}>
+                <label style={{ fontSize: '11px', fontWeight: '700', display: 'block', marginBottom: '2px' }}>
+                  LLEGADA
+                </label>
+                <input
+                  type="date"
+                  value={fechaEntrada}
+                  onChange={(e) => setFechaEntrada(e.target.value)}
+                  style={{
+                    fontSize: '14px',
+                    color: '#111',
+                    border: 'none',
+                    outline: 'none',
+                    width: '100%',
+                    padding: 0,
+                    fontFamily: 'inherit',
+                    backgroundColor: 'transparent'
+                  }}
+                />
               </div>
-              <div style={{ flex: 1, padding: '12px' }}>
-                <p style={{ fontSize: '11px', fontWeight: '700' }}>SALIDA</p>
-                <p style={{ fontSize: '14px', color: '#6b7280' }}>Agregar fecha</p>
+              <div style={{ flex: 1, padding: '8px 14px 8px 12px', minWidth: 0, boxSizing: 'border-box' }}>
+                <label style={{ fontSize: '11px', fontWeight: '700', display: 'block', marginBottom: '2px' }}>
+                  SALIDA
+                </label>
+                <input
+                  type="date"
+                  value={fechaSalida}
+                  min={fechaEntrada || undefined}
+                  onChange={(e) => setFechaSalida(e.target.value)}
+                  style={{
+                    fontSize: '14px',
+                    color: '#111',
+                    border: 'none',
+                    outline: 'none',
+                    width: '100%',
+                    maxWidth: '100%',
+                    padding: 0,
+                    fontFamily: 'inherit',
+                    backgroundColor: 'transparent',
+                    boxSizing: 'border-box'
+                  }}
+                />
               </div>
             </div>
-            <div style={{ padding: '12px' }}>
-              <p style={{ fontSize: '11px', fontWeight: '700' }}>HUÉSPEDES</p>
-              <p style={{ fontSize: '14px', color: '#6b7280' }}>1 huésped</p>
+            <div style={{ padding: '8px 14px 8px 12px', boxSizing: 'border-box' }}>
+              <label style={{ fontSize: '11px', fontWeight: '700', display: 'block', marginBottom: '2px' }}>
+                HUÉSPEDES
+              </label>
+              <input
+                type="number"
+                min="1"
+                max={alojamiento.capacidad_personas || undefined}
+                value={numHuespedes}
+                onChange={(e) => setNumHuespedes(Number(e.target.value))}
+                style={{
+                  fontSize: '14px',
+                  color: '#111',
+                  border: 'none',
+                  outline: 'none',
+                  width: '100%',
+                  padding: 0,
+                  fontFamily: 'inherit',
+                  backgroundColor: 'transparent'
+                }}
+              />
             </div>
           </div>
 
           <button
-            onClick={() => navigate(`/reserva/${id}`)}
+            onClick={handleReservar}
             style={{
               width: '100%',
               padding: '14px',

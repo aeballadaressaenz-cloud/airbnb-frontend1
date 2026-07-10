@@ -23,75 +23,37 @@ function Navbar({ onBusqueda }) {
   };
 
   return (
-    <nav style={{
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      padding: '10px 12px',
-      borderBottom: '1px solid #e0e0e0',
-      position: 'relative'
-    }}>
+    <nav className="flex flex-wrap md:flex-nowrap items-center justify-between gap-y-2 px-3 py-2.5 border-b border-gray-200 relative">
       {/* Logo */}
-      <Link to="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
+      <Link to="/" className="flex items-center no-underline order-1">
         <img src={logo} alt="nomada" style={{ height: '35px', width: 'auto', cursor: 'pointer' }} />
       </Link>
 
-      {/* Buscador centrado */}
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '6px',
-        border: '1px solid #e0e0e0',
-        borderRadius: '24px',
-        padding: '6px 12px',
-        position: 'absolute',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        maxWidth: '55%'
-      }}>
-        <span style={{ fontSize: '14px', color: '#555', whiteSpace: 'nowrap' }}>
+      {/* Buscador: en móvil pasa a ocupar todo el ancho y va debajo; en md+ vuelve a quedar centrado */}
+      <div
+        className="order-3 md:order-2 w-full md:w-auto mt-2 md:mt-0 md:absolute md:left-1/2 md:-translate-x-1/2 flex items-center gap-1.5 border border-gray-200 rounded-full px-3 py-1.5 md:max-w-[55%]"
+      >
+        <span className="text-sm text-gray-600 whitespace-nowrap">
           En cualquier lugar
         </span>
-        <span style={{ color: '#e0e0e0' }}>|</span>
+        <span className="text-gray-200">|</span>
         <input
           type="text"
           placeholder="Buscar destino..."
           onChange={(e) => onBusqueda(e.target.value)}
-          style={{
-            border: 'none',
-            outline: 'none',
-            fontSize: '13px',
-            width: '130px',
-            backgroundColor: 'transparent'
-          }}
+          className="border-none outline-none text-[13px] bg-transparent flex-1 min-w-0"
         />
-        <div style={{
-          backgroundColor: '#FF385C',
-          borderRadius: '50%',
-          width: '26px',
-          height: '26px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          cursor: 'pointer',
-          flexShrink: 0
-        }}>
+        <div
+          className="rounded-full flex items-center justify-center cursor-pointer shrink-0"
+          style={{ backgroundColor: '#FF385C', width: '26px', height: '26px' }}
+        >
           <CiSearch size={18} color="#fdfdfd" />
         </div>
       </div>
 
       {/* Menú + Login/Logout */}
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '8px',
-        border: '1px solid #e0e0e0',
-        borderRadius: '24px',
-        padding: '5px 10px',
-        flexShrink: 0,
-        position: 'relative'
-      }}>
-        <span style={{ fontSize: '16px' }}>☰</span>
+      <div className="order-2 md:order-3 ml-auto md:ml-0 flex items-center gap-2 border border-gray-200 rounded-full px-2.5 py-1.5 shrink-0 relative">
+        <span className="text-base">☰</span>
         <IoPersonCircleSharp
           size={28}
           color="#717171"
@@ -102,64 +64,38 @@ function Navbar({ onBusqueda }) {
         {!isLoggedIn ? (
           <button
             onClick={handleLoginClick}
-            style={{
-              backgroundColor: '#FF385C',
-              color: '#fff',
-              borderRadius: '12px',
-              padding: '4px 10px',
-              fontSize: '13px',
-              border: 'none',
-              cursor: 'pointer'
-            }}
+            className="text-white rounded-xl text-[13px] border-none cursor-pointer"
+            style={{ backgroundColor: '#FF385C', padding: '4px 10px' }}
           >
             Iniciar sesión
           </button>
         ) : (
           openMenu && (
-            <div style={{
-              position: 'absolute',
-              top: '40px',
-              right: 0,
-              backgroundColor: '#fff',
-              border: '1px solid #ddd',
-              borderRadius: '8px',
-              boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
-              display: 'flex',
-              flexDirection: 'column',
-              minWidth: '160px',
-              zIndex: 10
-            }}>
-              <Link to="/perfil" style={{ padding: '10px', textDecoration: 'none', color: '#111' }}>Perfil</Link>
+            <div className="absolute top-10 right-0 bg-white border border-gray-200 rounded-lg shadow-md flex flex-col min-w-[160px] z-10">
+              <Link to="/perfil" className="px-2.5 py-2.5 no-underline text-gray-900 hover:bg-gray-50">Perfil</Link>
 
               {rol === "huesped" && (
-                <Link to="/reservas" style={{ padding: '10px', textDecoration: 'none', color: '#111' }}>Mis reservas</Link>
+                <Link to="/mis-reservas" className="px-2.5 py-2.5 no-underline text-gray-900 hover:bg-gray-50">Mis reservas</Link>
               )}
 
               {rol === "anfitrion" && (
                 <>
-                  <Link to="/mis-alojamientos" style={{ padding: '10px', textDecoration: 'none', color: '#111' }}>Mis alojamientos</Link>
-                  <Link to="/publicar" style={{ padding: '10px', textDecoration: 'none', color: '#111' }}>Publicar alojamiento</Link>
+                  <Link to="/mis-alojamientos" className="px-2.5 py-2.5 no-underline text-gray-900 hover:bg-gray-50">Mis alojamientos</Link>
+                  <Link to="/publicar" className="px-2.5 py-2.5 no-underline text-gray-900 hover:bg-gray-50">Publicar alojamiento</Link>
                 </>
               )}
 
               {rol === "admin" && (
                 <>
-                  <Link to="/admin/usuarios" style={{ padding: '10px', textDecoration: 'none', color: '#111' }}>Gestionar usuarios</Link>
-                  <Link to="/admin/alojamientos" style={{ padding: '10px', textDecoration: 'none', color: '#111' }}>Gestionar alojamientos</Link>
-                  <Link to="/admin/reportes" style={{ padding: '10px', textDecoration: 'none', color: '#111' }}>Reportes</Link>
+                  <Link to="/admin/usuarios" className="px-2.5 py-2.5 no-underline text-gray-900 hover:bg-gray-50">Gestionar usuarios</Link>
+                  <Link to="/admin/alojamientos" className="px-2.5 py-2.5 no-underline text-gray-900 hover:bg-gray-50">Gestionar alojamientos</Link>
+                  <Link to="/admin/reportes" className="px-2.5 py-2.5 no-underline text-gray-900 hover:bg-gray-50">Reportes</Link>
                 </>
               )}
 
               <button
                 onClick={handleLogout}
-                style={{
-                  padding: '10px',
-                  border: 'none',
-                  background: 'none',
-                  textAlign: 'left',
-                  cursor: 'pointer',
-                  color: '#111'
-                }}
+                className="px-2.5 py-2.5 border-none bg-transparent text-left cursor-pointer text-gray-900 hover:bg-gray-50 rounded-b-lg"
               >
                 Cerrar sesión
               </button>

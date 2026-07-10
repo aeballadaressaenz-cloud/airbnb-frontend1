@@ -11,6 +11,9 @@ import Registro from './components/Auth/Registro';
 import Perfil from './components/Auth/Perfil';
 import EditarPerfil from './components/Auth/EditarPerfil';
 import Valoracion from './components/Auth/Valoracion';
+import HistorialReservas from './components/pages/HistorialReservas';
+import Reserva from './components/pages/Reserva';
+import PrivateRoute from './components/Privateroute';
 
 
 const BASE_URL = 'http://localhost:3000';
@@ -102,6 +105,16 @@ function App() {
       <Route path="/perfil" element={<Perfil />} />
       <Route path="/editar-perfil" element={<EditarPerfil />} />
       <Route path="/valoracion/:id" element={<Valoracion />} />
+      <Route path="/reserva/:id" element={
+  <PrivateRoute>
+    <Reserva />
+  </PrivateRoute>
+} />
+<Route path="/mis-reservas" element={
+  <PrivateRoute>
+    <HistorialReservas />
+  </PrivateRoute>
+} />
     </Routes>
     <Footerbar />
   </div>
