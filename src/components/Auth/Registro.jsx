@@ -58,94 +58,125 @@ function Registro() {
     }
   };
 
-  const inputStyle = (campo) => ({
-    width: "100%", padding: "12px", boxSizing: "border-box", outline: "none",
-    border: `1.5px solid ${errores[campo] ? "#FF385C" : "#e0e0e0"}`, borderRadius: "8px", fontSize: "14px"
-  });
-
-  const labelStyle = { display: "block", fontSize: "14px", fontWeight: "600", marginBottom: "6px", color: "#111" };
-  const errorStyle = { color: "#FF385C", fontSize: "12px", marginTop: "4px" };
+  const inputClass = (campo) =>
+    `w-full px-3 py-3 box-border outline-none rounded-lg text-sm border-[1.5px] ${
+      errores[campo] ? "border-[#FF385C]" : "border-gray-200"
+    }`;
 
   return (
     <div className="background-airbnb">
-      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "flex-end", paddingRight: "60px" }}>
+      <div className="min-h-screen flex items-center justify-end pr-16">
         {/* Card a la derecha */}
-        <div style={{
-          background: "#ffffff",
-          padding: "28px 40px",
-          borderRadius: "14px",
-          boxShadow: "0 3px 18px rgba(0,0,0,0.1)",
-          width: "100%",
-          maxWidth: "600px"
-        }}>
-          <h2 style={{
-            textAlign: "center",
-            marginBottom: "18px",
-            color: "#111111",
-            fontSize: "24px",
-            fontWeight: "700"
-          }}>
+        <div className="bg-white px-10 py-7 rounded-2xl shadow-lg w-full max-w-xl">
+          <h2 className="text-center mb-4 text-gray-900 text-2xl font-bold">
             Crear cuenta
           </h2>
 
           {errorGeneral && (
-            <div style={{ backgroundColor: "#fff0f3", color: "#FF385C", padding: "10px 14px", borderRadius: "8px", marginBottom: "20px", fontSize: "13px" }}>
+            <div className="bg-[#fff0f3] text-[#FF385C] px-3.5 py-2.5 rounded-lg mb-5 text-sm">
               {errorGeneral}
             </div>
           )}
 
           <form onSubmit={handleSubmit} noValidate>
             {/* Grid de dos columnas */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+            <div className="grid grid-cols-2 gap-4">
               <div>
-                <label style={labelStyle}>Nombre</label>
-                <input type="text" name="nombre" value={form.nombre} onChange={handleChange} placeholder="Tu nombre" style={inputStyle("nombre")} />
-                {errores.nombre && <p style={errorStyle}>{errores.nombre}</p>}
+                <label className="block text-sm font-semibold mb-1.5 text-gray-900">Nombre</label>
+                <input
+                  type="text"
+                  name="nombre"
+                  value={form.nombre}
+                  onChange={handleChange}
+                  placeholder="Tu nombre"
+                  className={inputClass("nombre")}
+                />
+                {errores.nombre && <p className="text-[#FF385C] text-xs mt-1">{errores.nombre}</p>}
               </div>
 
               <div>
-                <label style={labelStyle}>Apellido</label>
-                <input type="text" name="apellido" value={form.apellido} onChange={handleChange} placeholder="Tu apellido" style={inputStyle("apellido")} />
-                {errores.apellido && <p style={errorStyle}>{errores.apellido}</p>}
+                <label className="block text-sm font-semibold mb-1.5 text-gray-900">Apellido</label>
+                <input
+                  type="text"
+                  name="apellido"
+                  value={form.apellido}
+                  onChange={handleChange}
+                  placeholder="Tu apellido"
+                  className={inputClass("apellido")}
+                />
+                {errores.apellido && <p className="text-[#FF385C] text-xs mt-1">{errores.apellido}</p>}
               </div>
 
               <div>
-                <label style={labelStyle}>Correo electrónico</label>
-                <input type="email" name="correo" value={form.correo} onChange={handleChange} placeholder="tu@correo.com" style={inputStyle("correo")} />
-                {errores.correo && <p style={errorStyle}>{errores.correo}</p>}
+                <label className="block text-sm font-semibold mb-1.5 text-gray-900">Correo electrónico</label>
+                <input
+                  type="email"
+                  name="correo"
+                  value={form.correo}
+                  onChange={handleChange}
+                  placeholder="tu@correo.com"
+                  className={inputClass("correo")}
+                />
+                {errores.correo && <p className="text-[#FF385C] text-xs mt-1">{errores.correo}</p>}
               </div>
 
               <div>
-                <label style={labelStyle}>Teléfono <span style={{ color: "#9ca3af", fontWeight: "400" }}>(opcional)</span></label>
-                <input type="tel" name="telefono" value={form.telefono} onChange={handleChange} placeholder="Tu número" style={inputStyle("telefono")} />
+                <label className="block text-sm font-semibold mb-1.5 text-gray-900">
+                  Teléfono <span className="text-gray-400 font-normal">(opcional)</span>
+                </label>
+                <input
+                  type="tel"
+                  name="telefono"
+                  value={form.telefono}
+                  onChange={handleChange}
+                  placeholder="Tu número"
+                  className={inputClass("telefono")}
+                />
               </div>
             </div>
 
             {/* Rol y contraseña en filas completas */}
-            <div style={{ marginTop: "16px" }}>
-              <label style={labelStyle}>Rol</label>
-              <select name="rol" value={form.rol} onChange={handleChange} style={inputStyle("rol")}>
+            <div className="mt-4">
+              <label className="block text-sm font-semibold mb-1.5 text-gray-900">Rol</label>
+              <select
+                name="rol"
+                value={form.rol}
+                onChange={handleChange}
+                className={inputClass("rol")}
+              >
                 <option value="huesped">Huésped</option>
                 <option value="anfitrion">Anfitrión</option>
               </select>
-              {errores.rol && <p style={errorStyle}>{errores.rol}</p>}
+              {errores.rol && <p className="text-[#FF385C] text-xs mt-1">{errores.rol}</p>}
             </div>
 
-            <div style={{ marginTop: "16px" }}>
-              <label style={labelStyle}>Contraseña</label>
-              <input type="password" name="contrasena" value={form.contrasena} onChange={handleChange} placeholder="Mínimo 6 caracteres" style={inputStyle("contrasena")} />
-              {errores.contrasena && <p style={errorStyle}>{errores.contrasena}</p>}
+            <div className="mt-4">
+              <label className="block text-sm font-semibold mb-1.5 text-gray-900">Contraseña</label>
+              <input
+                type="password"
+                name="contrasena"
+                value={form.contrasena}
+                onChange={handleChange}
+                placeholder="Mínimo 6 caracteres"
+                className={inputClass("contrasena")}
+              />
+              {errores.contrasena && <p className="text-[#FF385C] text-xs mt-1">{errores.contrasena}</p>}
             </div>
 
-            <button type="submit" disabled={cargando}
-              style={{ width: "100%", marginTop: "20px", padding: "14px", backgroundColor: "#FF385C", color: "#fff", border: "none", borderRadius: "8px", fontWeight: "600", cursor: "pointer", fontSize: "16px" }}>
+            <button
+              type="submit"
+              disabled={cargando}
+              className="w-full mt-5 py-3.5 bg-[#FF385C] text-white rounded-lg font-semibold text-base hover:bg-[#e03150] transition disabled:opacity-70 disabled:cursor-not-allowed"
+            >
               {cargando ? "Registrando..." : "Crear cuenta"}
             </button>
           </form>
 
-          <p style={{ textAlign: "center", marginTop: "22px", color: "#6b7280", fontSize: "14px" }}>
+          <p className="text-center mt-5 text-gray-500 text-sm">
             ¿Ya tenés cuenta?{" "}
-            <Link to="/login" style={{ color: "#FF385C", textDecoration: "none", fontWeight: "600" }}>Iniciá sesión</Link>
+            <Link to="/login" className="text-[#FF385C] no-underline font-semibold">
+              Iniciá sesión
+            </Link>
           </p>
         </div>
       </div>

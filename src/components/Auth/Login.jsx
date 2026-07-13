@@ -13,8 +13,6 @@ function Login() {
 
   const navigate = useNavigate();
   const { login } = useAuth();
-  console.log("useAuth:", useAuth());
-
 
   const validar = () => {
     const nuevosErrores = {};
@@ -51,28 +49,21 @@ function Login() {
 
   return (
     <div className="background-airbnb">
-      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <div className="min-h-screen flex items-center justify-center">
         {/* Card de login */}
-        <div style={{
-          background: "#ffffff",
-          padding: "28px 40px",
-          borderRadius: "14px",
-          boxShadow: "0 3px 18px rgba(0,0,0,0.1)",
-          width: "100%",
-          maxWidth: "420px"
-        }}>
-          <h2 style={{ textAlign: "center", marginBottom: "18px", color: "#111111", fontSize: "24px", fontWeight: "700" }}>
+        <div className="bg-white px-10 py-7 rounded-2xl shadow-lg w-full max-w-md">
+          <h2 className="text-center mb-4 text-gray-900 text-2xl font-bold">
             Bienvenido de vuelta
           </h2>
 
           {errorGeneral && (
-            <div style={{ backgroundColor: "#fff0f3", color: "#FF385C", padding: "10px 14px", borderRadius: "8px", marginBottom: "20px" }}>
+            <div className="bg-[#fff0f3] text-[#FF385C] px-3.5 py-2.5 rounded-lg mb-5">
               {errorGeneral}
             </div>
           )}
 
           <form onSubmit={handleSubmit} noValidate>
-            <label style={{ display: "block", fontSize: "13px", fontWeight: "600", marginBottom: "6px", color: "#374151" }}>
+            <label className="block text-sm font-semibold mb-1.5 text-gray-700">
               Correo electrónico
             </label>
             <input
@@ -81,11 +72,11 @@ function Login() {
               value={form.email}
               onChange={handleChange}
               placeholder="tu@correo.com"
-              style={{ width: "100%", marginBottom: "12px", padding: "12px", border: "1px solid #e0e0e0", borderRadius: "8px" }}
+              className="w-full mb-3 px-3 py-3 border border-gray-200 rounded-lg text-sm outline-none"
             />
-            {errores.email && <p style={{ color: "#FF385C" }}>{errores.email}</p>}
+            {errores.email && <p className="text-[#FF385C] text-sm">{errores.email}</p>}
 
-            <label style={{ display: "block", fontSize: "13px", fontWeight: "600", marginBottom: "6px", color: "#374151" }}>
+            <label className="block text-sm font-semibold mb-1.5 text-gray-700">
               Contraseña
             </label>
             <input
@@ -94,31 +85,22 @@ function Login() {
               value={form.password}
               onChange={handleChange}
               placeholder="Tu contraseña"
-              style={{ width: "100%", marginBottom: "12px", padding: "12px", border: "1px solid #e0e0e0", borderRadius: "8px" }}
+              className="w-full mb-3 px-3 py-3 border border-gray-200 rounded-lg text-sm outline-none"
             />
-            {errores.password && <p style={{ color: "#FF385C" }}>{errores.password}</p>}
+            {errores.password && <p className="text-[#FF385C] text-sm">{errores.password}</p>}
 
             <button
               type="submit"
               disabled={cargando}
-              style={{
-                width: "100%",
-                padding: "14px",
-                backgroundColor: "#FF385C",
-                color: "#fff",
-                border: "none",
-                borderRadius: "8px",
-                fontWeight: "bold",
-                fontSize: "15px"
-              }}
+              className="w-full py-3.5 bg-[#FF385C] text-white rounded-lg font-bold text-sm hover:bg-[#e03150] transition disabled:opacity-70 disabled:cursor-not-allowed"
             >
               {cargando ? "Ingresando..." : "Iniciar sesión"}
             </button>
           </form>
 
-          <p style={{ textAlign: "center", marginTop: "22px", color: "#6b7280", fontSize: "13px" }}>
+          <p className="text-center mt-5 text-gray-500 text-sm">
             ¿No tenés cuenta?{" "}
-            <Link to="/registro" style={{ color: "#FF385C", textDecoration: "none", fontWeight: "600" }}>
+            <Link to="/registro" className="text-[#FF385C] no-underline font-semibold">
               Registrate
             </Link>
           </p>

@@ -92,6 +92,15 @@ function HistorialReservas() {
     confirmada: "bg-green-50 text-green-700 border-green-200",
     pendiente: "bg-yellow-50 text-yellow-700 border-yellow-200",
     cancelada: "bg-red-50 text-red-700 border-red-200",
+    completada: "bg-blue-50 text-blue-700 border-blue-200",
+  };
+
+  // Calcula el estado a mostrar sin depender de que el backend lo haya actualizado
+  const getEstadoVisual = (reserva) => {
+    const yaFinalizo = new Date(reserva.fecha_salida) < new Date();
+    if (reserva.estado === "cancelada") return "cancelada";
+    if (yaFinalizo) return "completada";
+    return reserva.estado;
   };
 
   return (
@@ -128,93 +137,111 @@ function HistorialReservas() {
           </div>
         ) : (
           <div className="flex flex-col gap-4">
-            {reservas.map((reserva) => (
-              <article
-                className="border border-gray-200 rounded-xl p-5 flex flex-col gap-3.5 transition hover:shadow-md hover:-translate-y-0.5"
-                key={reserva.id_reserva}
-              >
-                <div>
-                  <h2 className="text-lg font-bold text-gray-800">
-                    {reserva.alojamiento}
-                  </h2>
-                  <p className="text-gray-500 text-sm">{reserva.ciudad}</p>
-                </div>
+            {reservas.map((reserva) => {
+              const yaFinalizo = new Date(reserva.fecha_salida) < new Date();
+              const puedeCalificar =
+                yaFinalizo &&
+                reserva.estado !== "cancelada" &&
+                !reserva.calificacion;
+              const estadoVisual = getEstadoVisual(reserva);
 
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-2.5 bg-gray-50 rounded-lg px-4 py-3.5">
-                  <p className="flex flex-col gap-0.5">
-                    <span className="text-gray-500 text-[0.7rem] uppercase tracking-wide">
-                      Entrada
-                    </span>
-                    <strong className="text-gray-800 text-sm">
-                      {new Date(reserva.fecha_entrada).toLocaleDateString("es-NI")}
-                    </strong>
-                  </p>
+              return (
+                <article
+                  className="border border-gray-200 rounded-xl p-5 flex flex-col gap-3.5 transition hover:shadow-md hover:-translate-y-0.5"
+                  key={reserva.id_reserva}
+                >
+                  <div>
+                    <h2 className="text-lg font-bold text-gray-800">
+                      {reserva.alojamiento}
+                    </h2>
+                    <p className="text-gray-500 text-sm">{reserva.ciudad}</p>
+                  </div>
 
-                  <p className="flex flex-col gap-0.5">
-                    <span className="text-gray-500 text-[0.7rem] uppercase tracking-wide">
-                      Salida
-                    </span>
-                    <strong className="text-gray-800 text-sm">
-                      {new Date(reserva.fecha_salida).toLocaleDateString("es-NI")}
-                    </strong>
-                  </p>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-2.5 bg-gray-50 rounded-lg px-4 py-3.5">
+                    <p className="flex flex-col gap-0.5">
+                      <span className="text-gray-500 text-[0.7rem] uppercase tracking-wide">
+                        Entrada
+                      </span>
+                      <strong className="text-gray-800 text-sm">
+                        {new Date(reserva.fecha_entrada).toLocaleDateString("es-NI")}
+                      </strong>
+                    </p>
 
-                  <p className="flex flex-col gap-0.5">
-                    <span className="text-gray-500 text-[0.7rem] uppercase tracking-wide">
-                      Noches
-                    </span>
-                    <strong className="text-gray-800 text-sm">{reserva.noches}</strong>
-                  </p>
+                    <p className="flex flex-col gap-0.5">
+                      <span className="text-gray-500 text-[0.7rem] uppercase tracking-wide">
+                        Salida
+                      </span>
+                      <strong className="text-gray-800 text-sm">
+                        {new Date(reserva.fecha_salida).toLocaleDateString("es-NI")}
+                      </strong>
+                    </p>
 
-                  <p className="flex flex-col gap-0.5">
-                    <span className="text-gray-500 text-[0.7rem] uppercase tracking-wide">
-                      Total
-                    </span>
-                    <strong className="text-gray-800 text-sm">
-                      ${reserva.precio_total}
-                    </strong>
-                  </p>
+                    <p className="flex flex-col gap-0.5">
+                      <span className="text-gray-500 text-[0.7rem] uppercase tracking-wide">
+                        Noches
+                      </span>
+                      <strong className="text-gray-800 text-sm">{reserva.noches}</strong>
+                    </p>
 
-                  <p className="flex flex-col gap-0.5">
-                    <span className="text-gray-500 text-[0.7rem] uppercase tracking-wide">
-                      Estado
-                    </span>
-                    <strong
-                      className={`inline-block w-fit text-xs font-semibold rounded-full px-2.5 py-0.5 border ${
-                        estadoStyles[reserva.estado] ||
-                        "bg-gray-100 text-gray-700 border-gray-200"
-                      }`}
-                    >
-                      {reserva.estado}
-                    </strong>
-                  </p>
+                    <p className="flex flex-col gap-0.5">
+                      <span className="text-gray-500 text-[0.7rem] uppercase tracking-wide">
+                        Total
+                      </span>
+                      <strong className="text-gray-800 text-sm">
+                        ${reserva.precio_total}
+                      </strong>
+                    </p>
 
-                  <p className="flex flex-col gap-0.5">
-                    <span className="text-gray-500 text-[0.7rem] uppercase tracking-wide">
-                      Calificación
-                    </span>
-                    <strong className="text-gray-800 text-sm">
-                      {reserva.calificacion || "Sin valorar"}
-                    </strong>
-                  </p>
-                </div>
+                    <p className="flex flex-col gap-0.5">
+                      <span className="text-gray-500 text-[0.7rem] uppercase tracking-wide">
+                        Estado
+                      </span>
+                      <strong
+                        className={`inline-block w-fit text-xs font-semibold rounded-full px-2.5 py-0.5 border ${
+                          estadoStyles[estadoVisual] ||
+                          "bg-gray-100 text-gray-700 border-gray-200"
+                        }`}
+                      >
+                        {estadoVisual}
+                      </strong>
+                    </p>
 
-                <div className="flex justify-end">
-                  {reserva.estado !== "cancelada" && (
-                    <button
-                      type="button"
-                      onClick={() => cancelarReserva(reserva.id_reserva)}
-                      disabled={cancelando === reserva.id_reserva}
-                      className="bg-[#ec4f70] text-white font-semibold text-sm rounded-full px-4.5 py-2 disabled:bg-[#f3a5b4] disabled:cursor-not-allowed transition"
-                    >
-                      {cancelando === reserva.id_reserva
-                        ? "Cancelando..."
-                        : "Cancelar reserva"}
-                    </button>
-                  )}
-                </div>
-              </article>
-            ))}
+                    <p className="flex flex-col gap-0.5">
+                      <span className="text-gray-500 text-[0.7rem] uppercase tracking-wide">
+                        Calificación
+                      </span>
+                      <strong className="text-gray-800 text-sm">
+                        {reserva.calificacion || "Sin valorar"}
+                      </strong>
+                    </p>
+                  </div>
+
+                  <div className="flex justify-end gap-2.5">
+                    {puedeCalificar && (
+                      <Link
+                        to={`/valoracion/${reserva.id_reserva}`}
+                        className="bg-[#FF385C] text-white font-semibold text-sm rounded-full px-4.5 py-2 hover:bg-[#e03150] transition"
+                      >
+                        Calificar estadía
+                      </Link>
+                    )}
+
+                    {reserva.estado !== "cancelada" && !yaFinalizo && (
+                      <button
+                        type="button"
+                        onClick={() => cancelarReserva(reserva.id_reserva)}
+                        disabled={cancelando === reserva.id_reserva}
+                        className="bg-[#ec4f70] text-white font-semibold text-sm rounded-full px-4.5 py-2 disabled:bg-[#f3a5b4] disabled:cursor-not-allowed transition"
+                      >
+                        {cancelando === reserva.id_reserva
+                          ? "Cancelando..."
+                          : "Cancelar reserva"}
+                      </button>
+                    )}
+                  </div>
+                </article>
+              );
+            })}
           </div>
         )}
 

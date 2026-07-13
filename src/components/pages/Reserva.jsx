@@ -73,8 +73,13 @@ function Reserva() {
         notas_huesped: formulario.notas_huesped,
       });
 
-      setResumen(respuesta.data);
-      setMensaje("Reserva creada exitosamente.");
+      navigate(`/pago/${respuesta.data.id_reserva}`, {
+        state: {
+          noches: respuesta.data.noches,
+          precio_total: respuesta.data.precio_total,
+          titulo: alojamiento?.titulo
+        }
+      });
     } catch (err) {
       setError(
         err.response?.data?.error ||

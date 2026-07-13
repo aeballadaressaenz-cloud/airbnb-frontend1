@@ -26,7 +26,7 @@ function Navbar({ onBusqueda }) {
     <nav className="flex flex-wrap md:flex-nowrap items-center justify-between gap-y-2 px-3 py-2.5 border-b border-gray-200 relative">
       {/* Logo */}
       <Link to="/" className="flex items-center no-underline order-1">
-        <img src={logo} alt="nomada" style={{ height: '35px', width: 'auto', cursor: 'pointer' }} />
+        <img src={logo} alt="nomada" className="h-[35px] w-auto cursor-pointer" />
       </Link>
 
       {/* Buscador: en móvil pasa a ocupar todo el ancho y va debajo; en md+ vuelve a quedar centrado */}
@@ -43,10 +43,7 @@ function Navbar({ onBusqueda }) {
           onChange={(e) => onBusqueda(e.target.value)}
           className="border-none outline-none text-[13px] bg-transparent flex-1 min-w-0"
         />
-        <div
-          className="rounded-full flex items-center justify-center cursor-pointer shrink-0"
-          style={{ backgroundColor: '#FF385C', width: '26px', height: '26px' }}
-        >
+        <div className="rounded-full flex items-center justify-center cursor-pointer shrink-0 bg-[#FF385C] w-[26px] h-[26px]">
           <CiSearch size={18} color="#fdfdfd" />
         </div>
       </div>
@@ -57,15 +54,14 @@ function Navbar({ onBusqueda }) {
         <IoPersonCircleSharp
           size={28}
           color="#717171"
-          style={{ cursor: 'pointer' }}
+          className="cursor-pointer"
           onClick={() => setOpenMenu(!openMenu)}
         />
 
         {!isLoggedIn ? (
           <button
             onClick={handleLoginClick}
-            className="text-white rounded-xl text-[13px] border-none cursor-pointer"
-            style={{ backgroundColor: '#FF385C', padding: '4px 10px' }}
+            className="text-white rounded-xl text-[13px] border-none cursor-pointer bg-[#FF385C] px-2.5 py-1"
           >
             Iniciar sesión
           </button>

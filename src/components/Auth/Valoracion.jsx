@@ -23,7 +23,7 @@ function Valoracion() {
       const token = localStorage.getItem("token");
       await axios.post(
         `${BASE_URL}/api/reservas/${id}/valoracion`,
-        { puntuacion, comentario },
+        { calificacion: puntuacion, comentario },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setEnviado(true);
@@ -36,12 +36,17 @@ function Valoracion() {
 
   if (enviado) {
     return (
-      <div style={{ backgroundColor: "#f7f7f7", minHeight: "calc(100vh - 80px)", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Inter, sans-serif" }}>
-        <div style={{ background: "#fff", borderRadius: "16px", boxShadow: "0 2px 16px rgba(0,0,0,0.08)", padding: "48px 40px", textAlign: "center", maxWidth: "420px", width: "100%" }}>
-          <div style={{ fontSize: "48px", marginBottom: "16px" }}>★</div>
-          <h2 style={{ fontSize: "20px", fontWeight: "700", color: "#111", marginBottom: "8px" }}>¡Gracias por tu valoración!</h2>
-          <p style={{ color: "#6b7280", fontSize: "14px", marginBottom: "28px" }}>Tu opinión ayuda a otros viajeros a encontrar el alojamiento ideal.</p>
-          <button onClick={() => navigate("/")} style={{ padding: "12px 28px", backgroundColor: "#FF385C", color: "#fff", border: "none", borderRadius: "8px", fontWeight: "600", fontSize: "14px", cursor: "pointer" }}>
+      <div className="bg-gray-50 min-h-[calc(100vh-80px)] flex items-center justify-center">
+        <div className="bg-white rounded-2xl shadow-lg px-10 py-12 text-center max-w-md w-full">
+          <div className="text-5xl mb-4">★</div>
+          <h2 className="text-xl font-bold text-gray-900 mb-2">¡Gracias por tu valoración!</h2>
+          <p className="text-gray-500 text-sm mb-7">
+            Tu opinión ayuda a otros viajeros a encontrar el alojamiento ideal.
+          </p>
+          <button
+            onClick={() => navigate("/")}
+            className="px-7 py-3 bg-[#FF385C] text-white rounded-lg font-semibold text-sm hover:bg-[#e03150] transition"
+          >
             Volver al inicio
           </button>
         </div>
@@ -50,76 +55,69 @@ function Valoracion() {
   }
 
   return (
-    <div style={{ backgroundColor: "#f7f7f7", minHeight: "calc(100vh - 80px)", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "Inter, sans-serif" }}>
-      <div style={{ background: "#fff", borderRadius: "16px", boxShadow: "0 2px 16px rgba(0,0,0,0.08)", padding: "44px 40px", width: "100%", maxWidth: "480px" }}>
+    <div className="bg-gray-50 min-h-[calc(100vh-80px)] flex items-center justify-center">
+      <div className="bg-white rounded-2xl shadow-lg px-10 py-11 w-full max-w-lg">
 
-        <h2 style={{ fontSize: "20px", fontWeight: "700", color: "#111", marginBottom: "6px" }}>
+        <h2 className="text-xl font-bold text-gray-900 mb-1.5">
           Calificá tu estadía
         </h2>
-        <p style={{ color: "#6b7280", fontSize: "14px", marginBottom: "28px" }}>
+        <p className="text-gray-500 text-sm mb-7">
           Contanos cómo fue tu experiencia en este alojamiento.
         </p>
 
         {error && (
-          <div style={{ backgroundColor: "#fff0f3", color: "#FF385C", padding: "10px 14px", borderRadius: "8px", marginBottom: "20px", fontSize: "13px", border: "1px solid #ffd6de" }}>
+          <div className="bg-[#fff0f3] text-[#FF385C] px-3.5 py-2.5 rounded-lg mb-5 text-sm border border-[#ffd6de]">
             {error}
           </div>
         )}
 
         <form onSubmit={handleSubmit}>
           {/* Estrellas */}
-          <div style={{ marginBottom: "28px" }}>
-            <label style={{ display: "block", fontSize: "13px", fontWeight: "600", color: "#374151", marginBottom: "12px" }}>
+          <div className="mb-7">
+            <label className="block text-sm font-semibold text-gray-700 mb-3">
               Puntuación
             </label>
-            <div style={{ display: "flex", gap: "8px" }}>
+            <div className="flex gap-2">
               {[1, 2, 3, 4, 5].map((star) => (
                 <span
                   key={star}
                   onClick={() => setPuntuacion(star)}
                   onMouseEnter={() => setHover(star)}
                   onMouseLeave={() => setHover(0)}
-                  style={{
-                    fontSize: "36px", cursor: "pointer",
-                    color: star <= (hover || puntuacion) ? "#F5A623" : "#e0e0e0",
-                    transition: "color 0.15s"
-                  }}
+                  className={`text-4xl cursor-pointer transition-colors ${
+                    star <= (hover || puntuacion) ? "text-[#F5A623]" : "text-gray-200"
+                  }`}
                 >
                   ★
                 </span>
               ))}
             </div>
             {puntuacion > 0 && (
-              <p style={{ margin: "8px 0 0", fontSize: "13px", color: "#6b7280" }}>
+              <p className="mt-2 text-sm text-gray-500">
                 {["", "Muy malo", "Malo", "Regular", "Bueno", "Excelente"][puntuacion]}
               </p>
             )}
           </div>
 
           {/* Comentario */}
-          <div style={{ marginBottom: "28px" }}>
-            <label style={{ display: "block", fontSize: "13px", fontWeight: "600", color: "#374151", marginBottom: "6px" }}>
-              Comentario <span style={{ color: "#9ca3af", fontWeight: "400" }}>(opcional)</span>
+          <div className="mb-7">
+            <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+              Comentario <span className="text-gray-400 font-normal">(opcional)</span>
             </label>
             <textarea
               value={comentario}
               onChange={(e) => setComentario(e.target.value)}
               placeholder="¿Qué te pareció el alojamiento? ¿Lo recomendarías?"
               rows={4}
-              style={{
-                width: "100%", padding: "12px 14px", borderRadius: "8px",
-                border: "1.5px solid #e0e0e0", fontSize: "14px",
-                fontFamily: "Inter, sans-serif", outline: "none",
-                resize: "vertical", boxSizing: "border-box"
-              }}
+              className="w-full px-3.5 py-3 rounded-lg border-[1.5px] border-gray-200 text-sm outline-none resize-y box-border"
             />
           </div>
 
-          <button type="submit" disabled={cargando} style={{
-            width: "100%", padding: "14px", backgroundColor: "#FF385C",
-            color: "#fff", border: "none", borderRadius: "8px",
-            fontSize: "15px", fontWeight: "600", cursor: "pointer"
-          }}>
+          <button
+            type="submit"
+            disabled={cargando}
+            className="w-full py-3.5 bg-[#FF385C] text-white rounded-lg text-sm font-semibold hover:bg-[#e03150] transition disabled:opacity-70 disabled:cursor-not-allowed"
+          >
             {cargando ? "Enviando..." : "Enviar valoración"}
           </button>
         </form>

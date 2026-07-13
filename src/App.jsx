@@ -4,7 +4,7 @@ import TravelCard from './components/Card/TravelCard';
 import Navbar from './components/Navbar';
 import Categorybar from './components/Categorybar';
 import Footerbar from './components/Footerbar';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import DetalleAlojamiento from './components/Detalle/DetalleAlojamiento';
 import Login from './components/Auth/Login';
 import Registro from './components/Auth/Registro';
@@ -14,11 +14,17 @@ import Valoracion from './components/Auth/Valoracion';
 import HistorialReservas from './components/pages/HistorialReservas';
 import Reserva from './components/pages/Reserva';
 import PrivateRoute from './components/Privateroute';
+import PublicarAlojamiento from './components/Auth/PublicarAlojamiento';
+import RutaAnfitrion from './components/Auth/RutaAnfitrion';
+import MisAlojamientos from './components/Auth/MisAlojamientos';
+import EditarAlojamiento from './components/Auth/EditarAlojamiento';
+import PagoSimulado from './components/Auth/PagoSimulado';
 
 
 const BASE_URL = 'http://localhost:3000';
 
 function App() {
+  const location = useLocation();
   const [alojamientos, setAlojamientos] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
@@ -37,7 +43,7 @@ function App() {
         setError('Error al cargar los alojamientos');
         setCargando(false);
       });
-  }, []);
+  }, [location.pathname === '/']);
 
   const normalize = (str) =>
     str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -106,10 +112,36 @@ function App() {
       <Route path="/editar-perfil" element={<EditarPerfil />} />
       <Route path="/valoracion/:id" element={<Valoracion />} />
       <Route path="/reserva/:id" element={
+        
   <PrivateRoute>
     <Reserva />
   </PrivateRoute>
 } />
+
+<Route path="/publicar" element={
+  <RutaAnfitrion>
+    <PublicarAlojamiento />
+  </RutaAnfitrion>
+} />
+
+<Route path="/mis-alojamientos" element={
+  <RutaAnfitrion>
+    <MisAlojamientos />
+  </RutaAnfitrion>
+} />
+
+<Route path="/editar-alojamiento/:id" element={
+  <RutaAnfitrion>
+    <EditarAlojamiento />
+  </RutaAnfitrion>
+} />
+
+<Route path="/pago/:id" element={
+  <PrivateRoute>
+    <PagoSimulado />
+  </PrivateRoute>
+} />
+
 <Route path="/mis-reservas" element={
   <PrivateRoute>
     <HistorialReservas />
